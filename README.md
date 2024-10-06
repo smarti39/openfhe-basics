@@ -36,8 +36,6 @@ To run the executable, navigate to the `build` folder and use the following comm
 ./BasicsExecutable
 ```
 
-Note that any input files the program needs to access must be located in the `build` folder.
-
 ### New Source Files
 
 If any new source files are created, be sure to add them to the bottom of `CMakeLists.txt` as follows:
@@ -47,6 +45,6 @@ If any new source files are created, be sure to add them to the bottom of `CMake
 add_executable( BasicsExecutable
     src/main.cpp
     src/openFHE_wrapper.cpp
-    [ NEW SOURCE FILEPATH ]
+    [ FILEPATH ]
 )
 ```

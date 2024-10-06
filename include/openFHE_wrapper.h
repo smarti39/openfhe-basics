@@ -14,8 +14,8 @@ void printSchemeDetails(CCParams<CryptoContextCKKSRNS> parameters, CryptoContext
 
 void printCipherDetails(Ciphertext<DCRTPoly> ctxt);
 
-Ciphertext<DCRTPoly> fheInnerProduct(Ciphertext<DCRTPoly> ctxt);
+Ciphertext<DCRTPoly> fheInnerProduct(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ca, Ciphertext<DCRTPoly> cb);
 
-Ciphertext<DCRTPoly> fhePolynomial(Ciphertext<DCRTPoly> ctxt);
+Ciphertext<DCRTPoly> fhePolynomial(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ctxt);
 
 }

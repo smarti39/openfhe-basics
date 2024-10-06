@@ -2,18 +2,18 @@
 
 // Compute the inner product <ca, cb>
 // i.e. treat both ciphertexts as vectors and compute their inner product
-// Complete function using only EvalAdd, EvalMult, EvalRotate
-// Can be done with only log2(batchSize) additions and rotations
-Ciphertext<DCRTPoly> fheInnerProduct(Ciphertext<DCRTPoly> ca, Ciphertext<DCRTPoly> cb) {
+// Complete function using only EvalAdd, EvalMult, EvalRotate (no EvalInnerProduct)
+// Can be done with only log2(vector length) additions and rotations
+Ciphertext<DCRTPoly> OpenFHEWrapper::fheInnerProduct(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ca, Ciphertext<DCRTPoly> cb) {
     // TODO
     return ca;
 }
 
-// Compute the arbitrary polynomial f(x) = x^8 - 2x^4 + 7x - 2 homomorphically
+// Compute the arbitrary polynomial f(x) = x^5 - 3x^4 + 8x - 2 homomorphically
 // i.e. compute f(x) on every slot of the inputted ciphertext
-// Complete function using only EvalAdd, EvalMult, EvalRotate
+// Complete function using only EvalAdd, EvalMult, EvalRotate (no EvalPoly)
 // Can be done with a multiplicative depth of only 3
-Ciphertext<DCRTPoly> fhePolynomial(Ciphertext<DCRTPoly> ctxt) {
+Ciphertext<DCRTPoly> OpenFHEWrapper::fhePolynomial(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ctxt) {
     // TODO
     return ctxt;
 }

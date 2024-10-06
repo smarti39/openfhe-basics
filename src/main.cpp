@@ -30,10 +30,10 @@ int main(int argc, char *argv[]) {
     auto pk = keyPair.publicKey;
     auto sk = keyPair.secretKey;
     cc->EvalMultKeyGen(sk);
-    cc->EvalRotateKeyGen(sk, {1}); // Additional rotation keys must be added as needed
+    cc->EvalRotateKeyGen(sk, {1, 2, 4, 8}); // Additional rotation keys must be added as needed
 
     // Example of encryption process
-    vector<double> input = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0};
+    vector<double> input = {-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0};
     Plaintext ptxt = cc->MakeCKKSPackedPlaintext(input);
     Ciphertext<DCRTPoly> ctxt = cc->Encrypt(pk, ptxt);
 
@@ -42,6 +42,9 @@ int main(int argc, char *argv[]) {
     // Example of decryption process
     cc->Decrypt(sk, ctxt, &ptxt);
     vector<double> result = ptxt->GetRealPackedValue();
+    for(size_t i = 0; i < input.size(); i++) {
+        cout << result[i] << endl;
+    }
 
     return 0;
 }

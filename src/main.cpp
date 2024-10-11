@@ -39,12 +39,29 @@ int main(int argc, char *argv[]) {
 
     // Homomorphic operations upon ctxt would go here
 
-    // Example of decryption process
-    cc->Decrypt(sk, ctxt, &ptxt);
-    vector<double> result = ptxt->GetRealPackedValue();
-    for(size_t i = 0; i < input.size(); i++) {
-        cout << result[i] << endl;
+    Ciphertext<DCRTPoly> polyResult = OpenFHEWrapper::fhePolynomial(cc, ctxt);
+    Ciphertext<DCRTPoly> innerProductResult = OpenFHEWrapper::fheInnerProduct(cc, ctxt, ctxt); 
+
+    // Decrypt and print the inner product result
+    cc->Decrypt(sk, innerProductResult, &ptxt);
+    vector<double> innerProductVec = ptxt->GetRealPackedValue();
+    for(size_t i = 0; i < innerProductVec.size(); i++) {
+        cout << innerProductVec[i] << endl;
     }
+
+    // Decrypt and print the polynomial evaluation result
+    cc->Decrypt(sk, polyResult, &ptxt);
+    vector<double> polyResultVec = ptxt->GetRealPackedValue();
+    for(size_t i = 0; i < polyResultVec.size(); i++) {
+        cout << polyResultVec[i] << endl;
+    }
+
+    // Example of decryption process
+    //cc->Decrypt(sk, ctxt, &ptxt);
+    //vector<double> result = ptxt->GetRealPackedValue();
+    //for(size_t i = 0; i < input.size(); i++) {
+    //    cout << result[i] << endl;
+    //}
 
     return 0;
 }

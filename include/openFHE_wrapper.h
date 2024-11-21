@@ -14,8 +14,12 @@ void printSchemeDetails(CCParams<CryptoContextCKKSRNS> parameters, CryptoContext
 
 void printCipherDetails(Ciphertext<DCRTPoly> ctxt);
 
-Ciphertext<DCRTPoly> fheInnerProduct(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ca, Ciphertext<DCRTPoly> cb);
+Ciphertext<DCRTPoly> encryptFromVector(CryptoContext<DCRTPoly> cc, PublicKey<DCRTPoly> pk, vector<double> vec);
 
-Ciphertext<DCRTPoly> fhePolynomial(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ctxt);
+vector<double> decryptToVector(CryptoContext<DCRTPoly> cc, PrivateKey<DCRTPoly> sk, Ciphertext<DCRTPoly> ctxt);
+
+Ciphertext<DCRTPoly> binaryRotate(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ctxt, int factor);
+
+void plaintextNormalize(vector<double> &vec, const size_t dim);
 
 }

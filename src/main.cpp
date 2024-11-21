@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
     Ciphertext<DCRTPoly> ctxt = cc->Encrypt(pk, ptxt);
 
     // Homomorphic operations upon ctxt would go here
+    ctxt = OpenFHEWrapper::fhePolynomial(cc, ctxt);
 
     // Example of decryption process
     cc->Decrypt(sk, ctxt, &ptxt);

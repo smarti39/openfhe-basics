@@ -14,7 +14,23 @@ Ciphertext<DCRTPoly> OpenFHEWrapper::fheInnerProduct(CryptoContext<DCRTPoly> cc,
 // Complete function using only EvalAdd, EvalMult, EvalRotate (no EvalPoly)
 // Can be done with a multiplicative depth of only 3
 Ciphertext<DCRTPoly> OpenFHEWrapper::fhePolynomial(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPoly> ctxt) {
-    // TODO
+
+    Ciphertext<DCRTPoly> cpyTxt = ctxt;
+    Ciphertext<DCRTPoly> term2;
+    Ciphertext<DCRTPoly> term3;
+
+    ctxt = cc->EvalMult(ctxt, ctxt);
+    term2 = cc->EvalMult(ctxt, ctxt);
+    ctxt = cc->EvalMult(term2, cpyTxt);
+
+    term2 = cc->EvalMult(term2, -3);
+
+    term3 = cc->EvalMult(cpyTxt, 8);
+
+    ctxt = cc->EvalAdd(ctxt, term2);
+    ctxt = cc->EvalAdd(ctxt, term3);
+    ctxt = cc->EvalAdd(ctxt, -2);
+
     return ctxt;
 }
 

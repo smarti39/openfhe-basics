@@ -5,6 +5,32 @@
 using Matrix = std::vector<std::vector<int>>;
 using Diagonals = std::vector<std::vector<int>>;
 using Vector = std::vector<int>;
+using MatrixList = std::vector<Matrix>;
+
+
+std::vector<Matrix> splitIntoSquareMatrices(const Matrix& matrix, int k) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+    std::vector<Matrix> result;
+
+    // Split the matrix into k x k square matrices
+    for (int i = 0; i < rows; i += k) {
+        Matrix squareMatrix;
+
+        for (int j = 0; j < k; ++j) {
+            std::vector<int> row;
+            for (int col = 0; col < cols; ++col) {
+                row.push_back(matrix[i + j][col]);
+            }
+            squareMatrix.push_back(row);
+        }
+
+        result.push_back(squareMatrix);
+    }
+
+    return result;
+}
+
 
 // pre-process the matrix into diagonal form
 Diagonals preprocessToDiagonalForm(const Matrix& matrix) {
@@ -23,6 +49,31 @@ Diagonals preprocessToDiagonalForm(const Matrix& matrix) {
     }
 
     return diagonals;
+}
+
+// Function to concatenate rows from multiple matrices
+std::vector<Vector> concatenateRows(const std::vector<Matrix>& matrices) {
+    std::vector<Vector> concatenatedRows;
+
+    if (matrices.empty()) return concatenatedRows;
+
+    // Assume all matrices have the same number of rows
+    int numRows = matrices[0].size();
+
+    // For each row in the matrices
+    for (int rowIndex = 0; rowIndex < numRows; ++rowIndex) {
+        Vector concatenatedRow;
+
+        // Concatenate the rowIndex-th row of each matrix
+        for (const auto& matrix : matrices) {
+            const auto& row = matrix[rowIndex];
+            concatenatedRow.insert(concatenatedRow.end(), row.begin(), row.end());
+        }
+
+        concatenatedRows.push_back(concatenatedRow);
+    }
+
+    return concatenatedRows;
 }
 
 
@@ -112,8 +163,8 @@ void printDiagonals(const Diagonals& diagonals) {
 }
 
 int main() {
-    int K = 4;  // 4 rows 
-    int N = 4;  // 4 columns 
+    int K = 16;  // rows 
+    int N = 4;  // columns 
 
     Matrix matrix(K, std::vector<int>(N));
     for (int i = 0; i < K; ++i) {
@@ -124,12 +175,48 @@ int main() {
 
     std::cout << "Original Matrix:" << std::endl;
     printMatrix(matrix);
+    std::cout << std::endl;
 
+    // Split the matrix into 4x4 square matrices
+    std::vector<Matrix> squareMatrices = splitIntoSquareMatrices(matrix, N);
+
+    // Print each matrix
+    for (const auto& squareMatrix : squareMatrices) {
+        printMatrix(squareMatrix);
+        std::cout << std::endl;  // Space between matrices for readability
+    }
+
+    // Array (vector) to hold all diagonalized matrices
+    std::vector<Diagonals> allDiagonalMatrices;
+
+    // Process and print the diagonal form of each square matrix
+    for (const auto& squareMatrix : squareMatrices) {
+        std::cout << "\nDiagonalized Form of Matrix:" << std::endl;
+        Diagonals diagonals = preprocessToDiagonalForm(squareMatrix);
+        printDiagonals(diagonals);
+        
+        allDiagonalMatrices.push_back(diagonals);
+    }
+
+    // Concatenate the rows from all matrices
+    std::vector<Vector> concatenatedRows = concatenateRows(allDiagonalMatrices);
+
+    // Print the concatenated rows
+    std::cout << "\nConcatenated Rows:" << std::endl;
+    for (const auto& row : concatenatedRows) {
+        for (int value : row) {
+            std::cout << value << " ";
+        }
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+
+    /*
     // pre-process the matrix to get the diagonals
     Diagonals diagonals = preprocessToDiagonalForm(matrix);
 
-    std::cout << "\nDiagonals of the Matrix:" << std::endl;
-    printDiagonals(diagonals);
+    //std::cout << "\nDiagonals of the Matrix:" << std::endl;
+    //printDiagonals(diagonals);
 
     Vector vector(N);
     for (int i = 0; i < N; ++i) {
@@ -143,7 +230,7 @@ int main() {
     for (int value : result) {
         std::cout << value << " ";
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     return 0;
 }

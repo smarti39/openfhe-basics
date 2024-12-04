@@ -1,7 +1,7 @@
 #include "../include/config.h"
 #include "../include/openFHE_wrapper.h"
 #include "openfhe.h"
-#include "plaintext_MVM.cpp"
+#include "plaintext.cpp"
 
 using namespace lbcrypto;
 using namespace std;

@@ -2,9 +2,9 @@
 #include <iostream>
 #include <vector>
 
-using Matrix = std::vector<std::vector<int>>;
-using Diagonals = std::vector<std::vector<int>>;
-using Vector = std::vector<int>;
+using Matrix = std::vector<std::vector<double>>;
+using Diagonals = std::vector<std::vector<double>>;
+using Vector = std::vector<double>;
 using MatrixList = std::vector<Matrix>;
 
 
@@ -18,7 +18,7 @@ std::vector<Matrix> splitIntoSquareMatrices(const Matrix& matrix, int k) {
         Matrix squareMatrix;
 
         for (int j = 0; j < k; ++j) {
-            std::vector<int> row;
+            std::vector<double> row;
             for (int col = 0; col < cols; ++col) {
                 row.push_back(matrix[i + j][col]);
             }
@@ -87,7 +87,7 @@ Vector rotateLeft(const Vector& vec, int shift) {
 
     // print 
     std::cout << "rotated " << ": ";
-    for (int value : rotated) {
+    for (double value : rotated) {
         std::cout << value << " ";
     }
     std::cout << std::endl;
@@ -144,7 +144,7 @@ Vector matrixVectorMultiply(const Matrix& matrix, const Vector& vector) {
 // function to print the matrix 
 void printMatrix(const Matrix& matrix) {
     for (const auto& row : matrix) {
-        for (int value : row) {
+        for (double value : row) {
             std::cout << value << " ";
         }
         std::cout << std::endl;
@@ -155,7 +155,7 @@ void printMatrix(const Matrix& matrix) {
 void printDiagonals(const Diagonals& diagonals) {
     for (int i = 0; i < diagonals.size(); ++i) {
         std::cout << "Diagonal " << i << ": ";
-        for (int value : diagonals[i]) {
+        for (double value : diagonals[i]) {
             std::cout << value << " ";
         }
         std::cout << std::endl;
@@ -166,7 +166,7 @@ int main() {
     int K = 16;  // rows 
     int N = 4;  // columns 
 
-    Matrix matrix(K, std::vector<int>(N));
+    Matrix matrix(K, std::vector<double>(N));
     for (int i = 0; i < K; ++i) {
         for (int j = 0; j < N; ++j) {
             matrix[i][j] = i * N + j + 1;

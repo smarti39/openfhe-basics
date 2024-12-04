@@ -1,6 +1,7 @@
 #include "../include/config.h"
 #include "../include/openFHE_wrapper.h"
 #include "openfhe.h"
+#include "plaintext.cpp"
 
 using namespace lbcrypto;
 using namespace std;
@@ -82,6 +83,31 @@ int main(int argc, char *argv[]) {
   // Diagonal MVM implementation goes below
   // queryVector is 1-D of length 512, already normalized
   // dbVectors is 2-D of size 512x1024, all vectors already normalized
+
+  printMatrix(dbVectors);
+  std::vector<std::vector<std::vector<double>>> squareMatrices = splitIntoSquareMatrices(dbVectors, VECTOR_DIM);
+  //for (auto &matrix: squareMatrices) { 
+  //    printMatrix(matrix);
+        //std::cout << std:endl;
+  //}
+  
+  std::vector<std::vector<std::vector<double>>> allDiagonalMatrices;
+  
+  for (auto &squareMatrix: squareMatrices) {
+      std::vector<std::vector<double>> diagonals = preprocessToDiagonalForm(squareMatrix);
+      allDiagonalMatrices.push_back(diagonals);
+  }
+
+  std::vector<std::vector<double>> concatenatedRows = concatenateRows(allDiagonalMatrices);
+  /*std::cout << "\nConcatenated Rows:" << std::endl;
+    for (const auto& row : concatenatedRows) {
+        for (int value : row) {
+            std::cout << value << " ";
+        }
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }*/
+
   // Compute the matrix-vector product of dbVectors times queryVector in the encrypted domain
   cout << "Beginning implementation..." << endl;
 

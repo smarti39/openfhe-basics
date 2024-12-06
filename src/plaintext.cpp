@@ -33,7 +33,7 @@ std::vector<std::vector<std::vector<double>>> splitIntoSquareMatrices(std::vecto
 // function to print the matrix
 void printMatrix(std::vector<std::vector<double>> matrix) {
     for (const auto& row : matrix) {
-        for (int value : row) {
+        for (double value : row) {
             std::cout << value << " ";
         }
         std::cout << std::endl;

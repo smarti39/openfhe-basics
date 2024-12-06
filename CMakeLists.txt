@@ -60,4 +60,5 @@ endif()
 add_executable( BasicsExecutable
     src/main.cpp
     src/openFHE_wrapper.cpp
+    src/plaintext.cpp
 )

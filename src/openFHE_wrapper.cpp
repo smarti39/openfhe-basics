@@ -92,7 +92,7 @@ Ciphertext<DCRTPoly> OpenFHEWrapper::matrixMultiply(CryptoContext<DCRTPoly> cc, 
 
     for (size_t i=0; i < VECTOR_DIM; i++) {
         // rotate the by i and add it to the unrotated
-        rotated_query = cc->EvalRotate(query, i);
+        rotated_query = binaryRotate(cc, query, i);
         product = cc->EvalMult(conc_matrix[i], rotated_query);
         result = cc->EvalAdd(result, product);
     }

@@ -110,6 +110,10 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
     }
 
+    // encrypt each row 
+
+    // for every ciphertext call matrixMultiply with a different i
+
   // Compute the matrix-vector product of dbVectors times queryVector in the encrypted domain
   cout << "Beginning implementation..." << endl;
 

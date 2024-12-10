@@ -1,13 +1,14 @@
 
 #include <iostream>
 #include <vector>
+#include "../include/plaintext.h"
 /*
 using Matrix = std::vector<std::vector<int>>;
 using Diagonals = std::vector<std::vector<int>>;
 using Vector = std::vector<int>;
 using MatrixList = std::vector<Matrix>;
 */
-std::vector<std::vector<std::vector<double>>> splitIntoSquareMatrices(std::vector<std::vector<double> > &matrix, int k) {
+std::vector<std::vector<std::vector<double>>> splitIntoSquareMatrices(std::vector<std::vector<double>> &matrix, int k) {
     int rows = matrix.size();
     int cols = matrix[0].size();
     std::vector<std::vector<std::vector<double> > > result;

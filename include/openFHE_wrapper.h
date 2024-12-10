@@ -22,4 +22,6 @@ Ciphertext<DCRTPoly> binaryRotate(CryptoContext<DCRTPoly> cc, Ciphertext<DCRTPol
 
 void plaintextNormalize(vector<double> &vec, const size_t dim);
 
+Ciphertext<DCRTPoly> matrixMultiply(CryptoContext<DCRTPoly> cc, std::vector<Ciphertext<DCRTPoly>> conc_matrix, Ciphertext<DCRTPoly> query);
+
 }

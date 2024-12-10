@@ -5,6 +5,7 @@
 
 using namespace lbcrypto;
 using namespace std;
+using namespace OpenFHEWrapper;
 
 // Entry point of the application that orchestrates the flow
 
@@ -102,20 +103,42 @@ int main(int argc, char *argv[]) {
 
   std::vector<std::vector<double>> concatenatedRows = concatenateRows(allDiagonalMatrices);
   std::cout << "\nConcatenated Rows:" << std::endl;
-    for (const auto& row : concatenatedRows) {
-        for (double value : row) {
-            std::cout << value << " ";
-        }
-        std::cout << std::endl;
-        std::cout << std::endl;
-    }
+  for (const auto& row : concatenatedRows) {
+      for (double value : row) {
+          std::cout << value << " ";
+      }
+      std::cout << std::endl;
+      std::cout << std::endl;
+  }
 
-    // encrypt each row 
+  // encrypt each row 
+  std::vector<Ciphertext<DCRTPoly>> encrypted_conc; 
+  for (const auto& row : concatenatedRows) {
+    encrypted_conc.push_back(encryptFromVector(cc, pk, row));
+  }
 
-    // for every ciphertext call matrixMultiply with a different i
+  // encrypt query 
+  int size = dbVectors[0].size(); 
+  int scalingFactor = size/VECTOR_DIM; 
+    
+  for (size_t i = 0; i < VECTOR_DIM*(scalingFactor-1); i++) {
+    queryVector.push_back(queryVector[i]);
+  }
+
+  Ciphertext<DCRTPoly> query = encryptFromVector(cc, pk, queryVector);
 
   // Compute the matrix-vector product of dbVectors times queryVector in the encrypted domain
   cout << "Beginning implementation..." << endl;
+
+  // for every ciphertext in the vector encrypted_conc call matrixMultiply
+  Ciphertext<DCRTPoly> result;
+  result = matrixMultiply(cc, encrypted_conc, query);
+
+  // decrypt 
+  std::vector<double> decrypted_result = decryptToVector(cc, sk, result);
+  //for (int i=0; i<decrypted_result.size(), i++) {
+  //  cout << decrypted_result[i] << endl; 
+  //}
 
   cout << "Expected cosine similarity score between the query vector and the first DB vector: " << flush;
   cout << inner_product(queryVector.begin(), queryVector.end(), dbVectors[1].begin(), 0.0) << endl;

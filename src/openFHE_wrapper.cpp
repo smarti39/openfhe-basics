@@ -84,11 +84,13 @@ void OpenFHEWrapper::plaintextNormalize(vector<double> &vec, const size_t dim) {
 }
 
 // matrix-vector multiplication 
-Ciphertext<DCRTPoly> OpenFHEWrapper::matrixMultiply(CryptoContext<DCRTPoly> cc, std::vector<Ciphertext<DCRTPoly>> conc_matrix, Ciphertext<DCRTPoly> query) {
+Ciphertext<DCRTPoly> OpenFHEWrapper::matrixMultiply(CryptoContext<DCRTPoly> cc, std::vector<Ciphertext<DCRTPoly>> conc_matrix, Ciphertext<DCRTPoly> query, PublicKey<DCRTPoly> pk) {
     
     Ciphertext<DCRTPoly> rotated_query; 
     Ciphertext<DCRTPoly> product;
-    Ciphertext<DCRTPoly> result;
+
+    vector<double> resultInit = {0}; 
+    Ciphertext<DCRTPoly> result = encryptFromVector(cc, pk, resultInit);
 
     for (size_t i=0; i < VECTOR_DIM; i++) {
         // rotate the by i and add it to the unrotated

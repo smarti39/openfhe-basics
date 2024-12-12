@@ -30,7 +30,6 @@ int main(int argc, char *argv[]) {
   size_t batchSize = cc->GetEncodingParams()->GetBatchSize();
   // ----- Don't touch anything in the section above -----
 
-
   // Begin key generation operations
   cout << "Generating keys..." << endl;
   auto keyPair = cc->KeyGen();
@@ -112,30 +111,29 @@ int main(int argc, char *argv[]) {
   }
 
   // encrypt each row 
-  std::vector<Ciphertext<DCRTPoly>> encrypted_conc; 
+  std::vector<Ciphertext<DCRTPoly>> en_db; 
   for (const auto& row : concatenatedRows) {
-    encrypted_conc.push_back(encryptFromVector(cc, pk, row));
+    en_db.push_back(encryptFromVector(cc, pk, row));
   }
+  cout << en_db.size() << endl;
 
   // encrypt query 
-  int size = dbVectors[0].size(); 
-  int scalingFactor = size/VECTOR_DIM; 
-    
-  for (size_t i = 0; i < VECTOR_DIM*(scalingFactor-1); i++) {
-    queryVector.push_back(queryVector[i]);
+  vector<double> query(batchSize); 
+  for (size_t i=0; i<batchSize; i += VECTOR_DIM) {
+    copy(queryVector.begin(), queryVector.end(), query.begin() + i); 
   }
 
-  Ciphertext<DCRTPoly> query = encryptFromVector(cc, pk, queryVector);
+  Ciphertext<DCRTPoly> enc_query = encryptFromVector(cc, pk, query);
 
   // Compute the matrix-vector product of dbVectors times queryVector in the encrypted domain
   cout << "Beginning implementation..." << endl;
 
-  // for every ciphertext in the vector encrypted_conc call matrixMultiply
+  // for every ciphertext in the vector en_db call matrixMultiply
   Ciphertext<DCRTPoly> result;
-  result = matrixMultiply(cc, encrypted_conc, query);
+  result = matrixMultiply(cc, en_db, enc_query, pk);
 
   // decrypt 
-  std::vector<double> decrypted_result = decryptToVector(cc, sk, result);
+  std::vector<double> decrypted_result = decryptToVector(cc, sk, result); 
   //for (int i=0; i<decrypted_result.size(), i++) {
   //  cout << decrypted_result[i] << endl; 
   //}
